@@ -45,4 +45,9 @@ public class LoopController {
     public LoopResponseData deleteAccount(@PathVariable Long accountId){
         return accountAndCardService.deleteAcc(accountId);
     }
+
+    @PatchMapping("cards/delete/{cardId}")
+    public LoopResponseData deleteCard(@PathVariable Long cardId){
+        return accountAndCardService.deleteCard(cardId);
+    }
 }
