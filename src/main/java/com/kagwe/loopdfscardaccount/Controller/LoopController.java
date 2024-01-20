@@ -35,4 +35,9 @@ public class LoopController {
     public LoopResponseData updateAccount(@PathVariable Long accountId, @RequestBody Account account){
         return accountAndCardService.updateAccount(accountId, account);
     }
+
+    @PatchMapping("card/update/{cardId}")
+    public LoopResponseData updateCardAlias(@PathVariable Long cardId, @RequestBody Card card){
+        return accountAndCardService.updateCard(cardId, card);
+    }
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Card")
-public class Card {
+public class Card implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,9 @@ public class Card {
     @Column(name = "card_alias")
     private String cardAlias;
 
+    @Column(name = "account_id", nullable = false, updatable = false)
+    private Long accountId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "card_type", updatable = false, nullable = false)
     private CardType cardType;
@@ -33,14 +37,11 @@ public class Card {
     @Column(name = "deleted")
     private Boolean deleted;
 
-//    @Column(name = "account_id", updatable = false, insertable=false, nullable = false)
-//    private Long accountId;
-
-
-    @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
-    @JsonBackReference
-    private Account account;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
+//    @JsonBackReference
+//    private Account account;
 
 
 

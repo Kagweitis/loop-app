@@ -13,8 +13,8 @@ import java.util.Optional;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
    
-    @Query(nativeQuery = true, value = "SELECT c FROM Card c JOIN Account a ON c.account_id = a.id WHERE a.account_id = ? AND c.deleted = false")
-    List<Card> findByAccountIdAndDeletedFalse(@Param("accountId") Long accountId);
+//    @Query(nativeQuery = true, value = "select * from card where account_id = :accountId")
+    List<Card> findByDeletedFalseAndAccountId(@Param("accountId") Long accountId);
 
     Optional<Card> findCardByCardId(Long cardId);
 

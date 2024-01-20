@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Accounts")
+@Builder
 public class Account {
 
 
@@ -34,10 +36,11 @@ public class Account {
     private Long clientId;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = false;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(targetEntity = Card.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private List<Card> cards;
 
 

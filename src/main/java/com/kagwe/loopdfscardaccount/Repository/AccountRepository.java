@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-//    @Query(nativeQuery = true, value = "select * from accounts where account_id = :accountId")
+    @Query(nativeQuery = true, value = "select * from accounts where account_id = :accountId")
     Optional<Account> findByAccountId(Long accountId);
 
     List<Account> findByDeletedFalse();

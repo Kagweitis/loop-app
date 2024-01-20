@@ -19,7 +19,7 @@ public class LoopResponseData implements Serializable {
 
     private Account account;
 
-    private Card card;
+    private List<Card> cards;
 
     private String message;
 }

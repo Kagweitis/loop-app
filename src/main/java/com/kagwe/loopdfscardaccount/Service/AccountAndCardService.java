@@ -53,7 +53,8 @@ public class AccountAndCardService {
 
     public LoopResponseData createCard(Card card) {
         LoopResponseData loopResponseData = new LoopResponseData();
-        Long id = card.getAccount().getAccountId();
+        Long id = card.getAccountId();
+        log.info(" acc id" + id);
 
 
         // Check if the associated account exists
@@ -64,14 +65,11 @@ public class AccountAndCardService {
             return loopResponseData;
         }
         try {
-            Optional<Account> savedAcc = accountRepository.findByAccountId(id);
-            card.setAccount(savedAcc.get());
             CardType cardType = CardType.valueOf(String.valueOf(card.getCardType()).toUpperCase());
             card.setCardType(cardType);
             cardRepository.save(card);
             loopResponseData.setMessage("Card created and Linked successfully");
             loopResponseData.setStatusCode(HttpStatus.CREATED.value());
-            loopResponseData.setCard(card);
             return loopResponseData;
         } catch (Exception e){
             e.printStackTrace();
@@ -86,19 +84,20 @@ public class AccountAndCardService {
 
     public LoopResponseData getCardsOnAcc(Long accountId) {
         log.info(" acc id "+accountId);
-        List<Card> associatedCards = cardRepository.findByAccountIdAndDeletedFalse(accountId);
+        List<Card> associatedCards = cardRepository.findByDeletedFalseAndAccountId(accountId);
         LoopResponseData loopResponseData = new LoopResponseData();
         log.info(" cards "+associatedCards);
 
         if(!associatedCards.isEmpty()){
             loopResponseData.setMessage("Cards found");
-            loopResponseData.setCard((Card) associatedCards);
+            loopResponseData.setCards(associatedCards);
             loopResponseData.setStatusCode(HttpStatus.OK.value());
+            return loopResponseData;
         } else {
             loopResponseData.setMessage("No cards associated with the account");
             loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
+            return loopResponseData;
         }
-        return loopResponseData;
     }
 
     public LoopResponseData updateAccount(Long accountId, Account account) {
@@ -112,19 +111,22 @@ public class AccountAndCardService {
                 loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
                 return loopResponseData;
             } else {
-                Optional<Account> existingaccount = accountRepository.findById(accountId);
+                Account existingAcc = existingAccountOptional.get();
                 if (account.getIban() != null) {
-                    existingaccount.get().setIban(account.getIban());
+                    existingAcc.setIban(account.getIban());
                 }
                 if (account.getBicSwift() != null) {
-                    existingaccount.get().setBicSwift(account.getBicSwift());
+                    existingAcc.setBicSwift(account.getBicSwift());
                 }
                 if (account.getClientId() != null) {
-                    existingaccount.get().setClientId(account.getClientId());
+                    existingAcc.setClientId(account.getClientId());
                 }
-                accountRepository.save(existingaccount.get());
+                if (account.getDeleted() != null){
+                    existingAcc.setDeleted(account.getDeleted());
+                }
+                accountRepository.save(existingAcc);
                 loopResponseData.setMessage("account updated successfully");
-                loopResponseData.setAccount(existingaccount.get());
+                loopResponseData.setAccount(existingAcc);
                 loopResponseData.setStatusCode(HttpStatus.OK.value());
                 return loopResponseData;
             }
@@ -134,5 +136,29 @@ public class AccountAndCardService {
             loopResponseData.setMessage("An error occured");
             return loopResponseData;
         }
+    }
+
+    public LoopResponseData updateCard(Long cardId, Card card) {
+        //check if card exists
+        Optional<Card> existingCard = cardRepository.findCardByCardId(cardId);
+        LoopResponseData loopResponseData = new LoopResponseData();
+        try {
+            if (existingCard.isEmpty()){
+                loopResponseData.setMessage("Card does not exist");
+                loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
+            } else {
+                existingCard.get().setCardAlias(card.getCardAlias());
+                cardRepository.save(existingCard.get());
+                loopResponseData.setMessage("Card updated successfully");
+                loopResponseData.setStatusCode(HttpStatus.OK.value());
+            }
+            return loopResponseData;
+        } catch (Exception e){
+            e.printStackTrace();
+            loopResponseData.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            loopResponseData.setMessage("An error occured");
+            return loopResponseData;
+        }
+
     }
 }
