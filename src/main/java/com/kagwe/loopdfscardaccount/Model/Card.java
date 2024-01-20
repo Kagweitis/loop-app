@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Card")
+@Builder
 public class Card implements Serializable {
 
     @Id
@@ -35,7 +37,8 @@ public class Card implements Serializable {
     private CardType cardType;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    @Builder.Default
+    private Boolean deleted = false;
 
 //
 //    @ManyToOne

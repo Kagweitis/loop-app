@@ -161,4 +161,28 @@ public class AccountAndCardService {
         }
 
     }
+
+    public LoopResponseData deleteAcc(Long accountId) {
+        //check if card exists
+        Optional<Account> existingAcc = accountRepository.findByAccountId(accountId);
+        LoopResponseData loopResponseData = new LoopResponseData();
+        try {
+            if (existingAcc.isEmpty()){
+                loopResponseData.setMessage("Account does not exist");
+                loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
+                return loopResponseData;
+            } else {
+                existingAcc.get().setDeleted(true);
+                accountRepository.save(existingAcc.get());
+                loopResponseData.setMessage("Deleted successfully");
+                loopResponseData.setStatusCode(HttpStatus.OK.value());
+                return loopResponseData;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            loopResponseData.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            loopResponseData.setMessage("An error occured");
+            return loopResponseData;
+        }
+    }
 }

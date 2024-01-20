@@ -40,4 +40,9 @@ public class LoopController {
     public LoopResponseData updateCardAlias(@PathVariable Long cardId, @RequestBody Card card){
         return accountAndCardService.updateCard(cardId, card);
     }
+
+    @PatchMapping("account/delete/{accountId}")
+    public LoopResponseData deleteAccount(@PathVariable Long accountId){
+        return accountAndCardService.deleteAcc(accountId);
+    }
 }
