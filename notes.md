@@ -22,12 +22,12 @@
 
 ## 4. Populate Data to the Database:
 
-- Use Postman or the Swagger Docs to populate data to the database.
+- The App will auto populate two records to the database on startup as requested in the instructions.
+- Use Postman or the Swagger Docs to populate data to the database as and when desired.
 
 ## 5. Test the Application:
 
-- Execute your JUnit tests or use tools like Postman to test your RESTful endpoints.
-- Check that the application functions as expected with the populated data.
+- Use tools like Postman or Swagger to test the RESTful endpoints.
 
 ## 6. Build Docker Image:
 

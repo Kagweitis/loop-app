@@ -136,10 +136,13 @@ public class AccountAndCardServiceTest {
                 .thenReturn(Optional.of(existingAccount));
 
         Account updatedAccount = new Account();
+        updatedAccount.setAccountId(accountId);
+        updatedAccount.setId(1L);
         updatedAccount.setIban("UpdatedIBAN");
         updatedAccount.setBicSwift("UpdatedBICSWIFT");
         updatedAccount.setClientId(456L);
         updatedAccount.setDeleted(true);
+        updatedAccount.setCards(Collections.emptyList());
 
         LoopResponseData response = accountAndCardService.updateAccount(accountId, updatedAccount);
 

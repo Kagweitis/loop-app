@@ -213,7 +213,7 @@ public class AccountAndCardService {
         LoopResponseData loopResponseData = new LoopResponseData();
         try {
             if (card.isEmpty()){
-                loopResponseData.setMessage("Account does not exist");
+                loopResponseData.setMessage("Card does not exist");
                 loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
                 return loopResponseData;
             } else {
