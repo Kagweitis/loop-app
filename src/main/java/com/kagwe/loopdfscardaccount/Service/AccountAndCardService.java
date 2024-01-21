@@ -7,11 +7,14 @@ import com.kagwe.loopdfscardaccount.Model.Card;
 import com.kagwe.loopdfscardaccount.Model.CardType;
 import com.kagwe.loopdfscardaccount.Repository.AccountRepository;
 import com.kagwe.loopdfscardaccount.Repository.CardRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +25,8 @@ public class AccountAndCardService {
 
     private final AccountRepository accountRepository;
     private final CardRepository cardRepository;
+
+
 
     public LoopResponseData createAccount(Account account) {
         LoopResponseData loopResponseData = new LoopResponseData();

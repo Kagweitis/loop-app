@@ -126,4 +126,133 @@ public class AccountAndCardServiceTest {
         assertNull(response.getCards());
     }
 
+
+    @Test
+    void testUpdateAccount() {
+        Long accountId = 123456789L;
+        Account existingAccount = new Account(1L, accountId, "IBAN123", "BICSWIFT12", 123L, false, Collections.emptyList());
+
+        Mockito.when(accountRepository.findByAccountId(accountId))
+                .thenReturn(Optional.of(existingAccount));
+
+        Account updatedAccount = new Account();
+        updatedAccount.setIban("UpdatedIBAN");
+        updatedAccount.setBicSwift("UpdatedBICSWIFT");
+        updatedAccount.setClientId(456L);
+        updatedAccount.setDeleted(true);
+
+        LoopResponseData response = accountAndCardService.updateAccount(accountId, updatedAccount);
+
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        assertEquals("account updated successfully", response.getMessage());
+        assertEquals(updatedAccount, response.getAccount());
+    }
+
+    @Test
+    void testUpdateAccountWhenAccountDoesNotExist() {
+        Long accountId = 123456789L;
+
+        Mockito.when(accountRepository.findByAccountId(accountId))
+                .thenReturn(Optional.empty());
+
+        Account updatedAccount = new Account();
+        updatedAccount.setIban("UpdatedIBAN");
+        updatedAccount.setBicSwift("UpdatedBICSWIFT");
+        updatedAccount.setClientId(456L);
+        updatedAccount.setDeleted(true);
+
+        LoopResponseData response = accountAndCardService.updateAccount(accountId, updatedAccount);
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
+        assertEquals("Account does not exist", response.getMessage());
+        assertNull(response.getAccount());
+    }
+
+    @Test
+    void testUpdateCard() {
+        Long cardId = 1L;
+        Card existingCard = new Card(cardId, 1234L, "John", 1234567891L, CardType.PHYSICAL, false);
+
+        Mockito.when(cardRepository.findCardByCardId(cardId))
+                .thenReturn(Optional.of(existingCard));
+
+        Card updatedCard = new Card();
+        updatedCard.setCardAlias("UpdatedCardAlias");
+
+        LoopResponseData response = accountAndCardService.updateCard(cardId, updatedCard);
+
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        assertEquals("Card updated successfully", response.getMessage());
+    }
+
+    @Test
+    void testUpdateCardWhenCardDoesNotExist() {
+        Long cardId = 1L;
+
+        Mockito.when(cardRepository.findCardByCardId(cardId))
+                .thenReturn(Optional.empty());
+
+        Card updatedCard = new Card();
+        updatedCard.setCardAlias("UpdatedCardAlias");
+
+        LoopResponseData response = accountAndCardService.updateCard(cardId, updatedCard);
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
+        assertEquals("Card does not exist", response.getMessage());
+    }
+
+    @Test
+    void testDeleteAccount() {
+        Long accountId = 123456789L;
+        Account existingAccount = new Account(1L, accountId, "IBAN123", "BICSWIFT12", 123L, false, Collections.emptyList());
+
+        Mockito.when(accountRepository.findByAccountId(accountId))
+                .thenReturn(Optional.of(existingAccount));
+
+        LoopResponseData response = accountAndCardService.deleteAcc(accountId);
+
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        assertEquals("Deleted successfully", response.getMessage());
+    }
+
+    @Test
+    void testDeleteAccountWhenAccountDoesNotExist() {
+        Long accountId = 123456789L;
+
+        Mockito.when(accountRepository.findByAccountId(accountId))
+                .thenReturn(Optional.empty());
+
+        LoopResponseData response = accountAndCardService.deleteAcc(accountId);
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
+        assertEquals("Account does not exist", response.getMessage());
+    }
+
+    @Test
+    void testDeleteCard() {
+        Long cardId = 1L;
+        Card existingCard = new Card(cardId, 1234L, "John", 12394567891L, CardType.PHYSICAL, false);
+
+        Mockito.when(cardRepository.findCardByCardId(cardId))
+                .thenReturn(Optional.of(existingCard));
+
+        LoopResponseData response = accountAndCardService.deleteCard(cardId);
+
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        assertEquals("Deleted successfully", response.getMessage());
+    }
+
+    @Test
+    void testDeleteCardWhenCardDoesNotExist() {
+        Long cardId = 1L;
+
+        Mockito.when(cardRepository.findCardByCardId(cardId))
+                .thenReturn(Optional.empty());
+
+        LoopResponseData response = accountAndCardService.deleteCard(cardId);
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
+        assertEquals("Card does not exist", response.getMessage());
+    }
+
 }

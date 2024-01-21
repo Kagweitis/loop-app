@@ -40,11 +40,6 @@ public class Card implements Serializable {
     @Builder.Default
     private Boolean deleted = false;
 
-//
-//    @ManyToOne
-//    @JoinColumn(name = "account_id", referencedColumnName = "account_id", nullable = false)
-//    @JsonBackReference
-//    private Account account;
 
 
 
