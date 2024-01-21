@@ -83,7 +83,6 @@ public class AccountAndCardService {
     }
 
     public LoopResponseData getCardsOnAcc(Long accountId) {
-        log.info(" acc id "+accountId);
         List<Card> associatedCards = cardRepository.findByDeletedFalseAndAccountId(accountId);
         LoopResponseData loopResponseData = new LoopResponseData();
         log.info(" cards "+associatedCards);
@@ -96,6 +95,27 @@ public class AccountAndCardService {
         } else {
             loopResponseData.setMessage("No cards associated with the account");
             loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
+            return loopResponseData;
+        }
+    }
+
+    public LoopResponseData getAccount(Long accountId){
+        LoopResponseData loopResponseData = new LoopResponseData();
+        Optional<Account> account = accountRepository.findByAccountId(accountId);
+        try {
+            if (account.isEmpty()){
+                loopResponseData.setMessage("Account does not exist");
+                loopResponseData.setStatusCode(HttpStatus.NO_CONTENT.value());
+            } else {
+                loopResponseData.setMessage("Account found");
+                loopResponseData.setAccount(account.get());
+                loopResponseData.setStatusCode(HttpStatus.OK.value());
+            }
+            return loopResponseData;
+        } catch (Exception e){
+            e.printStackTrace();
+            loopResponseData.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            loopResponseData.setMessage("An error occured");
             return loopResponseData;
         }
     }

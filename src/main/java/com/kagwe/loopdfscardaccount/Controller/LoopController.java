@@ -31,6 +31,11 @@ public class LoopController {
         return accountAndCardService.getCardsOnAcc(accountId);
     }
 
+    @GetMapping("/account/{accountId}")
+    public LoopResponseData getAccount(@PathVariable Long accountId){
+        return accountAndCardService.getAccount(accountId);
+    }
+
     @PutMapping("account/update/{accountId}")
     public LoopResponseData updateAccount(@PathVariable Long accountId, @RequestBody Account account){
         return accountAndCardService.updateAccount(accountId, account);
