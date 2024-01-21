@@ -7,12 +7,9 @@ import com.kagwe.loopdfscardaccount.Model.Card;
 import com.kagwe.loopdfscardaccount.Model.CardType;
 import com.kagwe.loopdfscardaccount.Repository.AccountRepository;
 import com.kagwe.loopdfscardaccount.Repository.CardRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
