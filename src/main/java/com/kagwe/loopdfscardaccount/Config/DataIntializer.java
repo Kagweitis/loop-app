@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class DataIntializer implements CommandLineRunner {
 
     private final AccountRepository accountRepository;
-    private final CardRepository cardRepository;
+    private final CardRepository cardRepository ;
 
 
     @Override
